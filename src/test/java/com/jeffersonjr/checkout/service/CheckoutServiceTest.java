@@ -36,29 +36,53 @@ class CheckoutServiceTest {
         assertEquals("Maria Silva", summary.customerName());
     }
 
-//    @Test
-//    void shouldReturnFalseWhenCustomerIsBlocked() {
-//        when(customerApiClient.getCustomerById("cus-002"))
-//                .thenReturn(new CustomerResponse("cus-002", "Joao Souza", "98765432100", "BLOCKED"));
-//        when(billingApiClient.getBillingSummary("cus-002"))
-//                .thenReturn(new BillingSummaryResponse("cus-002", "APPROVED", new BigDecimal("200.00"), "BRL"));
-//
-//        var summary = checkoutService.getCheckoutSummary("cus-002");
-//
-//        assertFalse(summary.canCheckout());
-//    }
-//
-//    @Test
-//    void shouldReturnFalseWhenBillingIsRejected() {
-//        when(customerApiClient.getCustomerById("cus-003"))
-//                .thenReturn(new CustomerResponse("cus-003", "Ana Lima", "11122233344", "ACTIVE"));
-//        when(billingApiClient.getBillingSummary("cus-003"))
-//                .thenReturn(new BillingSummaryResponse("cus-003", "REJECTED", BigDecimal.ZERO, "BRL"));
-//
-//        var summary = checkoutService.getCheckoutSummary("cus-003");
-//
-//        assertFalse(summary.canCheckout());
-//    }
+    @Test
+    void shouldReturnFalseWhenCustomerIsBlocked() {
+        when(customerApiClient.getCustomerById("cus-002"))
+                .thenReturn(new CustomerResponse("cus-002", "Joao Souza", "98765432100", "BLOCKED"));
+        when(billingApiClient.getBillingSummary("cus-002"))
+                .thenReturn(new BillingSummaryResponse("cus-002", "APPROVED", new BigDecimal("200.00"), "BRL"));
+
+        var summary = checkoutService.getCheckoutSummary("cus-002");
+
+        assertFalse(summary.canCheckout());
+    }
+
+    @Test
+    void shouldReturnFalseWhenBillingIsRejected() {
+        when(customerApiClient.getCustomerById("cus-003"))
+                .thenReturn(new CustomerResponse("cus-003", "Ana Lima", "11122233344", "ACTIVE"));
+        when(billingApiClient.getBillingSummary("cus-003"))
+                .thenReturn(new BillingSummaryResponse("cus-003", "REJECTED", BigDecimal.ZERO, "BRL"));
+
+        var summary = checkoutService.getCheckoutSummary("cus-003");
+
+        assertFalse(summary.canCheckout());
+    }
+
+    @Test
+    void shouldReturnFalseWhenAvailableLimitIsBelowMinimumCheckoutLimit() {
+        when(customerApiClient.getCustomerById("cus-004"))
+                .thenReturn(new CustomerResponse("cus-004", "Clara Nunes", "55566677788", "ACTIVE"));
+        when(billingApiClient.getBillingSummary("cus-004"))
+                .thenReturn(new BillingSummaryResponse("cus-004", "APPROVED", new BigDecimal("99.99"), "BRL"));
+
+        var summary = checkoutService.getCheckoutSummary("cus-004");
+
+        assertFalse(summary.canCheckout());
+    }
+
+    @Test
+    void shouldReturnTrueWhenAvailableLimitMatchesMinimumCheckoutLimit() {
+        when(customerApiClient.getCustomerById("cus-005"))
+                .thenReturn(new CustomerResponse("cus-005", "Paula Costa", "44455566677", "ACTIVE"));
+        when(billingApiClient.getBillingSummary("cus-005"))
+                .thenReturn(new BillingSummaryResponse("cus-005", "APPROVED", new BigDecimal("100.00"), "BRL"));
+
+        var summary = checkoutService.getCheckoutSummary("cus-005");
+
+        assertTrue(summary.canCheckout());
+    }
 
     @Test
     void shouldPropagateNotFoundWhenCustomerDoesNotExist() {
