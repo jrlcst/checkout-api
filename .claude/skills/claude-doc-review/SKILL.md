@@ -25,6 +25,8 @@ Este review é gate bloqueante quando encontrar desatualização documental rele
 
 ## Deve bloquear quando
 
+Bloqueie apenas quando as duas condições forem verdadeiras ao mesmo tempo:
+
 1. O diff altera endpoint, DTO, regra de negócio, integração, configuração, contrato ou fluxo relevante.
 2. `README.md`, `docs/**`, `docs/ai-context.yaml` ou os skills locais de `.claude` não foram atualizados de forma coerente quando a orientação de review também mudou.
 
@@ -35,6 +37,7 @@ Este review é gate bloqueante quando encontrar desatualização documental rele
 - a mudança é ajuste de log
 - a mudança é somente formatação
 - a mudança é melhoria interna sem alteração de comportamento
+- a mudança relevante já está documentada de forma coerente, mesmo que ainda mereça atenção humana
 
 ## Prioridades específicas da checkout-api
 
@@ -50,10 +53,11 @@ Este review é gate bloqueante quando encontrar desatualização documental rele
 2. Verifique se o diff mudou arquivos sensíveis ou alterou comportamento relevante.
 3. Compare as mudanças de código com `README.md`, `docs/**` e `docs/ai-context.yaml`.
 4. Se a documentação não acompanhou, aponte exatamente quais arquivos deveriam ter sido atualizados.
-5. Se a mudança não exigir atualização documental, explicite por que o review passa.
+5. Se a mudança não exigir atualização documental, ou se a documentação estiver coerente com a mudança relevante, explicite por que o review passa.
 
 ## Formato esperado da resposta
 
 - Comece com `BLOCK` ou `PASS`.
 - Em caso de bloqueio, liste objetivamente o que mudou e quais arquivos documentais faltaram.
 - Em caso de `PASS`, explique de forma curta por que a documentação está coerente ou por que a mudança não exige atualização.
+- Não use `BLOCK` apenas para registrar que a mudança é sensível ou merece revisão humana explícita.
