@@ -44,7 +44,7 @@ public class CheckoutService {
         );
     }
 
-    boolean canCheckout(CustomerResponse customer, BillingSummaryResponse billingSummary) {
+    boolean canCheckout(final CustomerResponse customer, BillingSummaryResponse billingSummary) {
         return "ACTIVE".equals(customer.status())
                 && "APPROVED".equals(billingSummary.status())
                 && billingSummary.availableLimit().compareTo(BigDecimal.ZERO) > 0;

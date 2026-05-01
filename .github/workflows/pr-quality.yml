@@ -22,7 +22,10 @@ jobs:
       java-version: '21'
       working-directory: .
       build-test-command: ./mvnw -B test
-      sonar-command: ./mvnw -B verify sonar:sonar -DskipTests=false -Dsonar.projectKey=checkout-api
+      sonar-command: ./mvnw -B verify sonar:sonar -DskipTests=false
+      sonar-host-url: ${{ vars.SONAR_HOST_URL }}
+      sonar-organization: ${{ vars.SONAR_ORGANIZATION }}
+      sonar-project-key: ${{ vars.SONAR_PROJECT_KEY }}
       ai-context-path: docs/ai-context.yaml
       base-ref: main
       enable-trivy: true
