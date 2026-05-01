@@ -30,8 +30,8 @@ public class CheckoutService {
     }
 
     public CheckoutSummaryResponse getCheckoutSummary(String customerId) {
-        var customer = fetchCustomer(customerId);
-        var billingSummary = fetchBillingSummary(customerId);
+        final CustomerResponse customer = fetchCustomer(customerId);
+        final BillingSummaryResponse billingSummary = fetchBillingSummary(customerId);
 
         return new CheckoutSummaryResponse(
                 customer.id(),

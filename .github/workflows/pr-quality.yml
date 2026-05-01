@@ -14,9 +14,9 @@ permissions:
 
 jobs:
   pr-quality:
-    uses: your-org/pipeline-templates/.github/workflows/reusable-pr-quality.yml@main
+    uses: jrlcst/pipeline-templates/.github/workflows/reusable-pr-quality.yml@main
     with:
-      template-repository: your-org/pipeline-templates
+      template-repository: jrlcst/pipeline-templates
       template-ref: main
       language: java
       java-version: '21'
