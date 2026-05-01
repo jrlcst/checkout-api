@@ -74,7 +74,7 @@ public class CheckoutService {
         }
     }
 
-    private WebApplicationException badGateway(String message, Exception cause) {
+    private WebApplicationException badGateway(final String message, final Exception cause) {
         return new WebApplicationException(message, cause, Response.Status.BAD_GATEWAY);
     }
 }
