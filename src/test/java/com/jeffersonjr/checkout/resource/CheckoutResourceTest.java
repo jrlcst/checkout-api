@@ -73,4 +73,20 @@ class CheckoutResourceTest {
                 .body("billingStatus", is("REJECTED"))
                 .body("canCheckout", is(false));
     }
+
+    @Test
+    void shouldReturnFalseWhenAvailableLimitIsBelowMinimumCheckoutLimit() {
+        when(customerApiClient.getCustomerById("cus-004"))
+                .thenReturn(new CustomerResponse("cus-004", "Clara Nunes", "55566677788", "ACTIVE"));
+        when(billingApiClient.getBillingSummary("cus-004"))
+                .thenReturn(new BillingSummaryResponse("cus-004", "APPROVED", new BigDecimal("99.99"), "BRL"));
+
+        given()
+                .when().get("/v1/checkouts/cus-004/summary")
+                .then()
+                .statusCode(200)
+                .body("billingStatus", is("APPROVED"))
+                .body("availableLimit", is(99.99F))
+                .body("canCheckout", is(false));
+    }
 }
