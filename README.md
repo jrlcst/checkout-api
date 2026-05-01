@@ -127,3 +127,4 @@ O serviço sobe por padrão na porta `8080`.
 - `src/main/resources/application.properties`
 - `pom.xml`
 # pipeline-templates
+# pipeline-templates
