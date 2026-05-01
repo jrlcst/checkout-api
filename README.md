@@ -35,6 +35,24 @@ Microserviço responsável por orquestrar dados de cliente e billing para retorn
 - Testes: JUnit 5, Mockito, Rest Assured e Quarkus Test
 - Coverage: JaCoCo com exclusões de `dto`, `entity`, `config` e `client` para análise de cobertura
 
+## Configuracao de pipeline no GitHub
+
+O repositorio consome o workflow reutilizavel `jrlcst/pipeline-templates/.github/workflows/reusable-pr-quality.yml@main` via `.github/workflows/pr-quality.yml`.
+
+Para o gate de SonarCloud funcionar no pipeline, este repositorio precisa destas configuracoes no GitHub:
+
+- `Repository variable` `SONAR_HOST_URL=https://sonarcloud.io`
+- `Repository variable` `SONAR_ORGANIZATION=jeffersonpersonalsonar`
+- `Repository variable` `SONAR_PROJECT_KEY=jrlcst_checkout-api`
+- `Repository secret` `SONAR_TOKEN`
+
+Para as etapas de IA e notificacao, o pipeline tambem espera:
+
+- `Repository secret` `ANTHROPIC_API_KEY`
+- `Repository secret` `SLACK_WEBHOOK_URL`
+
+No SonarCloud, o projeto deve manter `Automatic Analysis` desabilitado para permitir analise via CI no GitHub Actions.
+
 ## Modelo de execução
 
 - Serviço síncrono via HTTP REST.
@@ -84,7 +102,7 @@ Exemplo de resposta:
 ## Impacto documental e revisão automatizada
 
 - Mudanças em `customerDocument`, `customerStatus`, `billingStatus`, `availableLimit`, `canCheckout`, clients HTTP ou regra de elegibilidade podem quebrar o comportamento esperado da POC.
-- Mudanças em `resource`, `service`, `client`, `dto`, `application.properties`, `pom.xml`, `docs` ou `.claude` devem revisar a documentação local e a orientação de review automatizado quando necessário.
+- Mudanças em `resource`, `service`, `client`, `dto`, `application.properties`, `pom.xml`, `.github/workflows`, `docs` ou `.claude` devem revisar a documentação local e a orientação de review automatizado quando necessário.
 
 ## Como subir localmente
 
