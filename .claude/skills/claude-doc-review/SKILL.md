@@ -39,6 +39,13 @@ Bloqueie apenas quando as duas condições forem verdadeiras ao mesmo tempo:
 - a mudança é melhoria interna sem alteração de comportamento
 - a mudança relevante já está documentada de forma coerente, mesmo que ainda mereça atenção humana
 
+## Regras adicionais obrigatórias
+
+- Testes, nomes de constantes, nomes de métodos, nomes de classes e o próprio código não contam como documentação.
+- Se `README.md`, `docs/**` ou `docs/ai-context.yaml` contiverem regra antiga, contraditória, incompleta ou que deveria ser atualizada em relação ao diff, o resultado deve ser `BLOCK`.
+- Não use `PASS` quando a própria análise identificar documentação desatualizada, contraditória ou incompleta.
+- Não use `PASS com ponto de atenção` se o ponto de atenção for atualização documental faltante.
+
 ## Prioridades específicas da checkout-api
 
 - alterações no endpoint `GET /v1/checkouts/{customerId}/summary`
