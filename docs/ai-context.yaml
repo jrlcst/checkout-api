@@ -1,0 +1,78 @@
+service:
+  name: checkout-api
+  description: API orquestradora de checkout para a POC de quality gates, AI review e revisão de documentação.
+  language: java
+  runtime: java-21
+  framework: quarkus
+  build_tool: maven
+
+docs:
+  readme: README.md
+  relevant_docs:
+    - docs/contexts/checkout-api-context.md
+    - docs/contexts/00-architecture-overview.md
+    - docs/flows/01-resumo-de-checkout-orquestrado.md
+    - docs/flows/02-tratamento-de-elegibilidade-e-falhas-externas.md
+
+exposes:
+  http:
+    - method: GET
+      path: /v1/checkouts/{customerId}/summary
+      description: Retorna um resumo consolidado de checkout com dados de cliente, billing e elegibilidade.
+      response_fields:
+        - customerId
+        - customerName
+        - customerDocument
+        - customerStatus
+        - billingStatus
+        - availableLimit
+        - canCheckout
+  messaging: []
+
+depends_on:
+  http:
+    - service: customer-api
+      method: GET
+      path: /v1/customers/{id}
+      reason: Buscar dados cadastrais do cliente.
+      expected_fields:
+        - id
+        - name
+        - document
+        - status
+    - service: billing-api
+      method: GET
+      path: /v1/billing/customers/{customerId}/summary
+      reason: Buscar status financeiro e limite disponível.
+      expected_fields:
+        - customerId
+        - status
+        - availableLimit
+        - currency
+  messaging: []
+
+consumed_by: []
+
+doc_sensitive_paths:
+  - src/main/java/**/resource/**
+  - src/main/java/**/client/**
+  - src/main/java/**/dto/**
+  - src/main/java/**/service/**
+  - src/main/resources/application*
+  - src/main/docker/**
+  - .claude/**
+  - pom.xml
+  - README.md
+  - docs/**
+
+ai_review:
+  focus:
+    - contrato HTTP
+    - integração entre APIs
+    - quebra de campos esperados
+    - alteração de regra de negócio
+    - ausência de teste em comportamento alterado
+    - documentação desatualizada
+
+quality:
+  min_new_code_coverage: 80

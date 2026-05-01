@@ -1,0 +1,34 @@
+name: Checkout API PR Quality
+
+on:
+  pull_request:
+    types:
+      - opened
+      - synchronize
+      - reopened
+      - ready_for_review
+
+permissions:
+  contents: read
+  pull-requests: write
+
+jobs:
+  pr-quality:
+    uses: your-org/pipeline-templates/.github/workflows/reusable-pr-quality.yml@main
+    with:
+      template-repository: your-org/pipeline-templates
+      template-ref: main
+      language: java
+      java-version: '21'
+      working-directory: .
+      build-test-command: ./mvnw -B test
+      sonar-command: ./mvnw -B verify sonar:sonar -DskipTests=false -Dsonar.projectKey=checkout-api
+      ai-context-path: docs/ai-context.yaml
+      base-ref: main
+      enable-trivy: true
+      enable-sonar: true
+      enable-doc-review: true
+      enable-pr-summary: true
+      enable-code-review: true
+      enable-slack: true
+    secrets: inherit
