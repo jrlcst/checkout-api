@@ -14,6 +14,28 @@ docs:
     - docs/flows/01-resumo-de-checkout-orquestrado.md
     - docs/flows/02-tratamento-de-elegibilidade-e-falhas-externas.md
 
+pipeline:
+  workflow: .github/workflows/pr-quality.yml
+  template_workflow: jrlcst/pipeline-templates/.github/workflows/reusable-pr-quality.yml@main
+  sonar:
+    host_url: https://sonarcloud.io
+    organization: jeffersonpersonalsonar
+    project_key: jrlcst_checkout-api
+    required_github_variables:
+      - SONAR_HOST_URL
+      - SONAR_ORGANIZATION
+      - SONAR_PROJECT_KEY
+    required_github_secrets:
+      - SONAR_TOKEN
+    notes:
+      - Automatic Analysis deve permanecer desabilitado no SonarCloud para analise por CI.
+  ai_review:
+    required_github_secrets:
+      - ANTHROPIC_API_KEY
+  notifications:
+    required_github_secrets:
+      - SLACK_WEBHOOK_URL
+
 exposes:
   http:
     - method: GET
@@ -54,6 +76,7 @@ depends_on:
 consumed_by: []
 
 doc_sensitive_paths:
+  - .github/workflows/**
   - src/main/java/**/resource/**
   - src/main/java/**/client/**
   - src/main/java/**/dto/**

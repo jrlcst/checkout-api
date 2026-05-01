@@ -55,6 +55,16 @@ Essas propriedades estao em `src/main/resources/application.properties`.
 - Coverage: JaCoCo configurado no `pom.xml`
 - Exclusoes de coverage: `**/dto/**`, `**/entity/**`, `**/config/**`, `**/client/**`
 
+## Configuracao de CI e quality gates
+
+- O repositorio usa o caller `.github/workflows/pr-quality.yml` para acionar o workflow reutilizavel do projeto `jrlcst/pipeline-templates`.
+- O gate de SonarCloud depende das variaveis `SONAR_HOST_URL`, `SONAR_ORGANIZATION` e `SONAR_PROJECT_KEY` configuradas no GitHub.
+- Para o `checkout-api`, os valores esperados sao `https://sonarcloud.io`, `jeffersonpersonalsonar` e `jrlcst_checkout-api`.
+- O gate de Sonar tambem depende do secret `SONAR_TOKEN`.
+- As etapas `doc-review` e `code-review-ai` dependem do secret `ANTHROPIC_API_KEY`.
+- A notificacao final de Slack depende do secret `SLACK_WEBHOOK_URL`.
+- No SonarCloud, `Automatic Analysis` deve permanecer desabilitado para o projeto ser analisado pelo pipeline de CI.
+
 ## Endpoints principais
 
 - `GET /v1/checkouts/{customerId}/summary`

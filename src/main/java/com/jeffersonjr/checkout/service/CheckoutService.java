@@ -30,8 +30,8 @@ public class CheckoutService {
     }
 
     public CheckoutSummaryResponse getCheckoutSummary(String customerId) {
-        var customer = fetchCustomer(customerId);
-        var billingSummary = fetchBillingSummary(customerId);
+        final CustomerResponse customer = fetchCustomer(customerId);
+        final BillingSummaryResponse billingSummary = fetchBillingSummary(customerId);
 
         return new CheckoutSummaryResponse(
                 customer.id(),
@@ -44,13 +44,13 @@ public class CheckoutService {
         );
     }
 
-    boolean canCheckout(CustomerResponse customer, BillingSummaryResponse billingSummary) {
+    boolean canCheckout(final CustomerResponse customer, BillingSummaryResponse billingSummary) {
         return "ACTIVE".equals(customer.status())
                 && "APPROVED".equals(billingSummary.status())
                 && billingSummary.availableLimit().compareTo(BigDecimal.ZERO) > 0;
     }
 
-    private CustomerResponse fetchCustomer(String customerId) {
+    private CustomerResponse fetchCustomer(final String customerId) {
         try {
             return customerApiClient.getCustomerById(customerId);
         } catch (NotFoundException exception) {
@@ -74,7 +74,7 @@ public class CheckoutService {
         }
     }
 
-    private WebApplicationException badGateway(String message, Exception cause) {
+    private WebApplicationException badGateway(final String message, final Exception cause) {
         return new WebApplicationException(message, cause, Response.Status.BAD_GATEWAY);
     }
 }
