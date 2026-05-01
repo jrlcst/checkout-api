@@ -61,6 +61,30 @@ class CheckoutServiceTest {
     }
 
     @Test
+    void shouldReturnFalseWhenAvailableLimitIsBelowMinimumCheckoutLimit() {
+        when(customerApiClient.getCustomerById("cus-004"))
+                .thenReturn(new CustomerResponse("cus-004", "Clara Nunes", "55566677788", "ACTIVE"));
+        when(billingApiClient.getBillingSummary("cus-004"))
+                .thenReturn(new BillingSummaryResponse("cus-004", "APPROVED", new BigDecimal("99.99"), "BRL"));
+
+        var summary = checkoutService.getCheckoutSummary("cus-004");
+
+        assertFalse(summary.canCheckout());
+    }
+
+    @Test
+    void shouldReturnTrueWhenAvailableLimitMatchesMinimumCheckoutLimit() {
+        when(customerApiClient.getCustomerById("cus-005"))
+                .thenReturn(new CustomerResponse("cus-005", "Paula Costa", "44455566677", "ACTIVE"));
+        when(billingApiClient.getBillingSummary("cus-005"))
+                .thenReturn(new BillingSummaryResponse("cus-005", "APPROVED", new BigDecimal("100.00"), "BRL"));
+
+        var summary = checkoutService.getCheckoutSummary("cus-005");
+
+        assertTrue(summary.canCheckout());
+    }
+
+    @Test
     void shouldPropagateNotFoundWhenCustomerDoesNotExist() {
         when(customerApiClient.getCustomerById("cus-404")).thenThrow(new NotFoundException("missing customer"));
 

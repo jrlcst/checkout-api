@@ -17,6 +17,8 @@ import java.math.BigDecimal;
 @ApplicationScoped
 public class CheckoutService {
 
+    static final BigDecimal MINIMUM_CHECKOUT_LIMIT = new BigDecimal("100.00");
+
     private final CustomerApiClient customerApiClient;
     private final BillingApiClient billingApiClient;
 
@@ -44,10 +46,10 @@ public class CheckoutService {
         );
     }
 
-    boolean canCheckout(final CustomerResponse customer, BillingSummaryResponse billingSummary) {
+    boolean canCheckout(final CustomerResponse customer, final BillingSummaryResponse billingSummary) {
         return "ACTIVE".equals(customer.status())
                 && "APPROVED".equals(billingSummary.status())
-                && billingSummary.availableLimit().compareTo(BigDecimal.ZERO) > 0;
+                && billingSummary.availableLimit().compareTo(MINIMUM_CHECKOUT_LIMIT) >= 0;
     }
 
     private CustomerResponse fetchCustomer(final String customerId) {
