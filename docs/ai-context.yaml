@@ -5,6 +5,8 @@ service:
   runtime: java-21
   framework: quarkus
   build_tool: maven
+  business_rules:
+    - canCheckout requer customer ACTIVE, billing APPROVED e availableLimit maior ou igual a 100.00
 
 docs:
   readme: README.md

@@ -21,7 +21,7 @@ Microserviço responsável por orquestrar dados de cliente e billing para retorn
 1. Expõe o endpoint `GET /v1/checkouts/{customerId}/summary`.
 2. Consome `customer-api` para buscar dados cadastrais.
 3. Consome `billing-api` para buscar status financeiro e limite disponível.
-4. Calcula `canCheckout` como `true` apenas quando cliente está `ACTIVE`, billing está `APPROVED` e `availableLimit > 0`.
+4. Calcula `canCheckout` como `true` apenas quando cliente está `ACTIVE`, billing está `APPROVED` e `availableLimit >= 100.00`.
 5. Propaga `404` quando cliente ou billing não existem e converte falhas inesperadas de integração em `502`.
 
 ## Stack técnica
@@ -81,8 +81,9 @@ Exemplo de resposta:
 
 ### Regras de retorno
 
-- Retorna `200` com `canCheckout = true` quando `customerStatus = ACTIVE`, `billingStatus = APPROVED` e `availableLimit > 0`.
+- Retorna `200` com `canCheckout = true` quando `customerStatus = ACTIVE`, `billingStatus = APPROVED` e `availableLimit >= 100.00`.
 - Retorna `200` com `canCheckout = false` quando o cliente está bloqueado ou o billing está rejeitado.
+- Retorna `200` com `canCheckout = false` quando o billing está aprovado, mas `availableLimit < 100.00`.
 - Retorna `404` quando `customer-api` ou `billing-api` respondem ausência do recurso esperado.
 - Retorna `502` quando uma dependência externa falha de forma inesperada.
 
@@ -144,8 +145,3 @@ O serviço sobe por padrão na porta `8080`.
 - `src/test/java/com/jeffersonjr/checkout/service/CheckoutServiceTest.java`
 - `src/main/resources/application.properties`
 - `pom.xml`
-# pipeline-templates
-# pipeline-templates
-# pipeline-templates
-# pipeline-templates
-# pipeline-templates
