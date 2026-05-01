@@ -50,7 +50,7 @@ public class CheckoutService {
                 && billingSummary.availableLimit().compareTo(BigDecimal.ZERO) > 0;
     }
 
-    private CustomerResponse fetchCustomer(String customerId) {
+    private CustomerResponse fetchCustomer(final String customerId) {
         try {
             return customerApiClient.getCustomerById(customerId);
         } catch (NotFoundException exception) {
