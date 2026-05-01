@@ -26,6 +26,7 @@ O objetivo principal do servico e demonstrar integracao entre APIs e analise de 
 3. O service chama `customer-api` via `CustomerApiClient`.
 4. O service chama `billing-api` via `BillingApiClient`.
 5. O service calcula `canCheckout` com base em status do cliente, status do billing e limite disponivel.
+	O fluxo atual considera elegivel apenas billing aprovado com `availableLimit >= 100.00`.
 6. O endpoint devolve um `CheckoutSummaryResponse` consolidado.
 
 ## Entradas e saidas

@@ -10,16 +10,18 @@ Aplicar a regra de elegibilidade do checkout e tratar adequadamente falhas e aus
 2. O metodo `canCheckout(...)` verifica:
    - `customer.status == ACTIVE`
    - `billing.status == APPROVED`
-   - `billing.availableLimit > 0`
+   - `billing.availableLimit >= 100.00`
 3. Quando qualquer uma dessas condicoes falha, `canCheckout` retorna `false`.
-4. Quando `customer-api` ou `billing-api` retornam ausencia, o servico propaga `404` contextualizado.
-5. Quando uma dependencia falha inesperadamente, o servico responde `502`.
+4. Mesmo com billing aprovado, limite abaixo de `100.00` invalida o checkout.
+5. Quando `customer-api` ou `billing-api` retornam ausencia, o servico propaga `404` contextualizado.
+6. Quando uma dependencia falha inesperadamente, o servico responde `502`.
 
 ## Entradas importantes
 
 - `customer.status`
 - `billing.status`
 - `billing.availableLimit`
+- limite minimo de checkout: `100.00`
 
 ## Saidas importantes
 

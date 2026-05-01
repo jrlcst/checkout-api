@@ -21,7 +21,7 @@
 
 - Arquivo: `src/main/java/com/jeffersonjr/checkout/service/CheckoutService.java`
 - Papel: orquestrar chamadas externas e aplicar a regra de elegibilidade.
-- Regra: `canCheckout = true` apenas quando cliente `ACTIVE`, billing `APPROVED` e `availableLimit > 0`.
+- Regra: `canCheckout = true` apenas quando cliente `ACTIVE`, billing `APPROVED` e `availableLimit >= 100.00`.
 
 ### CustomerApiClient
 
